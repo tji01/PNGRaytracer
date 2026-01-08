@@ -29,6 +29,7 @@ depends on structs.h, lin_alg.h, and stb_image_write.h
 #include "stb_image_write.h"
 #include "lin_alg.h"
 #include <stdio.h>
+
 #define NUM_OBJ 8
 
 void pixel(int index, unsigned char* data, float r, float g, float b);
@@ -46,11 +47,14 @@ int shadow = 0;
 float channels = 3;
 
 
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc == 1) goto begin;
+    top = atof((argv[1]));
+    side = atof((argv[2]));
     
-    
-    
+    begin:
+    printf(1, "Generating %f x %f image... ", side, top);
     //float center = (((side*top)/2)*channels) + ((top/2)*channels);
     //float value;
     //int bias = 0;
@@ -174,7 +178,7 @@ int main()
         freeVector(v3);
         freeRay(r);
     }
-
+    printf("writing image... ");
     stbi_write_png("reference.png", (int)top, (int) side, 3, image, top*3);
     //image frees
     free(image);
@@ -232,6 +236,7 @@ int main()
     freeObject(tri5_obj);
 
     free(objects_array);
+    printf("done.\n");
 }
 
 
@@ -571,7 +576,9 @@ void shade_reflect(color* c, ray* _ray, float t, obj* j, int val, obj** objects)
 
 
     shading:
+
     //find vector toward light
+
     vector* toLight = vectorFromPoints(r_terminal, theLight); 
     normalize(toLight);
     vector* bumpedCollision = (vector*) scale(.99999, (vector*) r_terminal);

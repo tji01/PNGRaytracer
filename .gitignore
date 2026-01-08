@@ -1,0 +1,13 @@
+# Executables
+*.exe
+*.out
+*.app
+a.out
+ray3
+
+# macOS
+*.dSYM/
+*.su
+*.gch
+*.o
+*.so
